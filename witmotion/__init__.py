@@ -83,6 +83,7 @@ class IMU:
         self.last_pitch = None
         self.last_yaw = None
         self.last_mag = None
+        self.last_bearing = None
         self.last_q = None
 
     def close(self) -> None:
