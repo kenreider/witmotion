@@ -1,3 +1,5 @@
+import math
+from math import *
 import struct
 from datetime import datetime, timezone
 from enum import Enum
@@ -139,13 +141,15 @@ class AngleMessage(ReceiveMessage):
 class MagneticMessage(ReceiveMessage):
     code = 0x54
 
-    def __init__(self, mag, temp_celsius):
+    def __init__(self, bearing, mag, temp_celsius):
+        self.bearing = bearing
         self.mag = mag
         self.temp_celsius = temp_celsius
 
     def __str__(self):
-        return "magnetic message - vec:%s temp_celsius:%s" % (
+        return "magnetic message - vec:%s bearing:%s temp_celsius:%s" % (
             self.mag,
+            self.bearing,
             self.temp_celsius,
         )
 
@@ -154,8 +158,12 @@ class MagneticMessage(ReceiveMessage):
         x, y, z, tempr = struct.unpack("<hhhh", body)
         mag = (x, y, z)
         temp_celsius = tempr / 100
+        bearing = math.atan2(y,x)/math.pi*180
+        if bearing<0:
+                bearing = bearing+360 
         return cls(
             mag=mag,
+            bearing=bearing,
             temp_celsius=temp_celsius,
         )
 
