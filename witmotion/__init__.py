@@ -221,6 +221,13 @@ class IMU:
         magnetic messages have been received, will return `None`.
         """
         return self.last_mag
+    
+    def get_magnetic_bearing(self) -> Optional[Tuple[float, float, float]]:
+        """
+        Get the last magnetic bearing received from the device. If no
+        magnetic bearing have been received, will return `None`.
+        """
+        return self.last_bearing
 
     def get_quaternion(self) -> Optional[Tuple[float, float, float, float]]:
         """
